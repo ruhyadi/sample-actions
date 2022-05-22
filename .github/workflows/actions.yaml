@@ -14,9 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       IMAGE_NAME: ${{ env.IMAGE_NAME }}
+<<<<<<< HEAD
     steps:
       - id: save_var
         run: echo "::set-output name=IMAGE_NAME::${{ env.IMAGE_NAME }}"
+=======
+>>>>>>> fb881db4b435d258445eaa9a85ab72f522c6be0d
 
   docker:
     needs: [params]
