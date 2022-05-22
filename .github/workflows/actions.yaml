@@ -44,14 +44,14 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ needs.params.outputs.IMAGE_NAME }}
+          tags: ruhyadi/sample-actions:latest
 
   torchhub:
     needs: [params, docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container: 
-      image: ${{ needs.params.outputs.IMAGE_NAME }}
+      image: ruhyadi/sample-actions:latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
