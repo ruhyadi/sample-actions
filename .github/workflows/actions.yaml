@@ -39,8 +39,7 @@ jobs:
   torch-hub:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
-    container: 
-      image: ${{ env.IMAGE_NAME }}
+    container: ${{ env.IMAGE_NAME }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
