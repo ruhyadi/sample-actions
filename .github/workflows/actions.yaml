@@ -9,7 +9,20 @@ env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
 
 jobs:
+  params:
+      name: Enable Global Env Variables
+      runs-on: ubuntu-latest
+      outputs:
+          params: ${{ steps.env-vars.outputs.params }}
+      steps:
+          -   name: install jq
+              run: pip install jq
+          -   id: env-vars
+              name: Output environment variables
+              run: echo "::set-output name=params::$(echo $(jq -n 'env'))"
+
   docker:
+    needs: [params]
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -34,13 +47,14 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME }}
+          tags: ${{ fromJson(needs.params.outputs.params).IMAGE_NAME }}
 
   torchhub:
+    needs: [params, docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container: 
-      image: ruhyadi/sample-actions:latest
+      image: ${{ fromJson(needs.params.outputs.params).IMAGE_NAME }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
