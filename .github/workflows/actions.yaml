@@ -9,16 +9,6 @@ env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
 
 jobs:
-  torch-hub:
-    name: Load Model with Torch Hub
-    runs-on: ubuntu-latest
-    container: ${{ env.IMAGE_NAME }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3 
-      - name: Load Model
-        run: python hubconf.py
-        
   docker:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
@@ -46,3 +36,12 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_NAME }}
 
+  torchhub:
+    name: Load Model with Torch Hub
+    runs-on: ubuntu-latest
+    container: ${{ env.IMAGE_NAME }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3 
+      - name: Load Model
+        run: python hubconf.py
