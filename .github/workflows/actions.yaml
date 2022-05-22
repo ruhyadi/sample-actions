@@ -39,7 +39,8 @@ jobs:
   torchhub:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
-    container: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
+    container: 
+      image: ruhyadi/sample-actions:latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
