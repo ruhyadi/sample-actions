@@ -1,13 +1,13 @@
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 
 # Start FROM Ubuntu image https://hub.docker.com/_/ubuntu
-FROM ubuntu:20.04
+FROM python:3.9.13-slim-buster
 
 # Create working directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-
+ENTRYPOINT [ "bash" ]
 # Usage Examples -------------------------------------------------------------------------------------------------------
 
 # Build and Push

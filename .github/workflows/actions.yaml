@@ -41,7 +41,7 @@ jobs:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
-      image: ultralytics/yolov5:latest-cpu
+      image: ruhyadi/sample-actions:latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
