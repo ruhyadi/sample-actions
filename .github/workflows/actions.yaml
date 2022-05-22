@@ -10,16 +10,13 @@ env:
 
 jobs:
   params:
-      name: Enable Global Env Variables
-      runs-on: ubuntu-latest
-      outputs:
-          params: ${{ steps.env-vars.outputs.params }}
-      steps:
-          -   name: install jq
-              run: pip install jq
-          -   id: env-vars
-              name: Output environment variables
-              run: echo "::set-output name=params::$(echo $(jq -n 'env'))"
+    name: Enable Global Env Variables
+    runs-on: ubuntu-latest
+    outputs:
+      IMAGE_NAME: ${{ steps.save_var.outputs.IMAGE_NAME }}
+    steps:
+      - id: save_var
+        run: echo "::set-output name=IMAGE_NAME::${{ env.IMAGE_NAME }}"
 
   docker:
     needs: [params]
@@ -47,14 +44,14 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ fromJson(needs.params.outputs.params).IMAGE_NAME }}
+          tags: ${{ needs.params.outputs.IMAGE_NAME }}
 
   torchhub:
     needs: [params, docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container: 
-      image: ${{ fromJson(needs.params.outputs.params).IMAGE_NAME }}
+      image: ${{ needs.params.outputs.IMAGE_NAME }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
