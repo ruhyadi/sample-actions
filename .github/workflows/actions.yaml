@@ -39,9 +39,7 @@ jobs:
   torchhub:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME_: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
-    container: ${{ env.IMAGE_NAME }}
+    container: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
