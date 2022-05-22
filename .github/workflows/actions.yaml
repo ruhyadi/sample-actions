@@ -6,20 +6,10 @@ on:
       - "main"
 
 env:
-  IMAGE_NAME: ruhyadi/${{ github.repository }}:latest
+  IMAGE_NAME: ${{ github.repository }}:latest
 
 jobs:
-  params:
-    name: Enable Global Env Variables
-    runs-on: ubuntu-latest
-    outputs:
-      IMAGE_NAME: ${{ env.IMAGE_NAME }}
-    steps:
-      - id: save_var
-        run: echo "::set-output name=IMAGE_NAME::${{ env.IMAGE_NAME }}"
-
   docker:
-    needs: [params]
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -44,14 +34,14 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ needs.params.outputs.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_NAME }}
 
   torchhub:
-    needs: [params, docker]
+    needs: [docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
-    container: 
-      image: ${{ needs.params.outputs.IMAGE_NAME }}
+    container:
+      image: ultralytics/yolov5:latest-cpu
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
