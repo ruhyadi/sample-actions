@@ -1,0 +1,51 @@
+name: Checking Model
+
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:latest
+
+jobs:
+  docker:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
+
+  torch-hub:
+    name: Load Model with Torch Hub
+    runs-on: ubuntu-latest
+    container: 
+      image: ${{ env.IMAGE_NAME }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3 
+      - name: Load Model
+        run: python hubconf.py
