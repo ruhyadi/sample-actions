@@ -13,7 +13,7 @@ jobs:
     name: Enable Global Env Variables
     runs-on: ubuntu-latest
     outputs:
-      IMAGE_NAME: ${{ steps.save_var.outputs.IMAGE_NAME }}
+      IMAGE_NAME: ${{ env.IMAGE_NAME }}
     steps:
       - id: save_var
         run: echo "::set-output name=IMAGE_NAME::${{ env.IMAGE_NAME }}"
@@ -44,14 +44,14 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ruhyadi/sample-actions:latest
+          tags: ${{ needs.params.outputs.IMAGE_NAME }}
 
   torchhub:
     needs: [params, docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container: 
-      image: ruhyadi/sample-actions:latest
+      image: ${{ needs.params.outputs.IMAGE_NAME }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3 
