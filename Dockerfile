@@ -7,10 +7,6 @@ FROM ubuntu:20.04
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Copy contents
-COPY . /usr/src/app
-RUN git clone https://github.com/ultralytics/yolov5 /usr/src/yolov5
-
 
 # Usage Examples -------------------------------------------------------------------------------------------------------
 
