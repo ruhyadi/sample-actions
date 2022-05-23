@@ -70,9 +70,9 @@ def yolov5s(pretrained=True, channels=3, classes=80, autoshape=True, verbose=Tru
 
 if __name__ == '__main__':
 
-    entrypoints = torch.hub.list('ruhyadi/sample-actions:v1.1', force_reload=True)
+    entrypoints = torch.hub.list('ruhyadi/sample-actions:v1.0', force_reload=True)
     print(entrypoints)
 
     for weight in entrypoints:
-        model = torch.hub.load('ruhyadi/sample-actions:v1.1', weight)
+        model = torch.hub.load('ruhyadi/sample-actions:v1.0', weight)
         print(f'[INFO] Success load {weight.upper()}')

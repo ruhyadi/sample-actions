@@ -41,13 +41,10 @@ jobs:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
-      image: ruhyadi/sample-actions:v1.1 # Success
-      # image: ${{ github.repository }}:${{ github.ref_name }} # Fail, unrecognize github.
+      image: ruhyadi/sample-actions:v1.0
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref_name }}
       - name: Load Model
         run: python hubconf.py
 
@@ -65,14 +62,3 @@ jobs:
           repo: ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # nuclio-server:
-  #   name: Initiate Nulcio Server
-  #   runs-on: ubuntu-latest
-  #   container:
-  #     image: ruhyadi/sample-actions:latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v3
-  #     - name: Load Model
-  #       run: python hubconf.py
