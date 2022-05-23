@@ -1,10 +1,5 @@
 name: Checking Model
 
-# TODO: change to release
-# on:
-#   push:
-#     branches:
-#       - "main"
 on:
   release:
     types: [released]
@@ -39,17 +34,20 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME }}
+          tags: env.IMAGE_NAME
 
   torchhub:
     needs: [docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
-      image: ruhyadi/sample-actions:v1.0
+      image: ruhyadi/sample-actions:v1.1 # Success
+      # image: ${{ github.repository }}:${{ github.ref_name }} # Fail, unrecognize github.
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
       - name: Load Model
         run: python hubconf.py
 
