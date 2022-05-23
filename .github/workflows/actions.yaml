@@ -9,7 +9,6 @@ env:
 
 jobs:
   torchhub:
-    needs: [docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
@@ -28,10 +27,10 @@ jobs:
           python3 hubconf.py --repository ${{ github.repository }} --tag ${{ github.ref_name }}
 
   delete-release:
-    needs: [docker, torchhub]
+    needs: [torchhub]
     name: Delete Release
     runs-on: ubuntu-latest
-    if: always() && (needs.torchhub.result == 'failure' || needs.docker.result == 'failure')
+    if: always() && (needs.torchhub.result == 'failure')
     steps:
       - name: Delete Tag and Release 
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
