@@ -70,9 +70,15 @@ def yolov5s(pretrained=True, channels=3, classes=80, autoshape=True, verbose=Tru
 
 if __name__ == '__main__':
 
-    entrypoints = torch.hub.list('ruhyadi/sample-actions:v1.0', force_reload=True)
-    print(entrypoints)
+    import argparse
 
-    for weight in entrypoints:
-        model = torch.hub.load('ruhyadi/sample-actions:v1.0', weight)
+    parser = argparse.ArgumentParser(description="Torch Hub Testing")
+    parser.add_argument('--repository', type=str, required=True, help='Repository, username/reponame')
+    parser.add_argument('--tag', type=str, required=True, help='Release tag')
+    args = parser.parse_args()
+
+    weights = torch.hub.list(f'{args.repository}:{args.tag}', force_reload=True)
+
+    for weight in weights:
+        model = torch.hub.load(f'{args.repository}:{args.tag}', weight)
         print(f'[INFO] Success load {weight.upper()}')
