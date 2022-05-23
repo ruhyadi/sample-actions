@@ -37,7 +37,6 @@ jobs:
   #         tags: ${{ env.IMAGE_NAME }}
 
   torchhub:
-    needs: [docker]
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
@@ -49,7 +48,7 @@ jobs:
         run: python3 hubconf.py
 
   delete-release:
-    needs: [docker, torchhub]
+    needs: [torchhub]
     name: Delete Release
     runs-on: ubuntu-latest
     if: always() && (needs.torchhub.result == 'failure' || needs.docker.result == 'failure')
