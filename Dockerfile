@@ -27,6 +27,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN git clone https://github.com/ultralytics/yolov5 /usr/src/yolov5
 
+# Entrypoint must be bash
 ENTRYPOINT [ "bash" ]
 
 # Usage Examples -------------------------------------------------------------------------------------------------------
