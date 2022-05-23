@@ -40,13 +40,15 @@ jobs:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
-      image: ruhyadi/sample-actions:v1.0
+      # TODO: change image container
+      image: username/reponame:tag
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Load Model
-        run: python3 hubconf.py
-        # run: python3 hubconf.py # check your docker
+
+      - name: Load Model with Python
+        run: |
+          python hubconf.py --repository ${{ github.repository }} --tag ${{ github.ref_name }}
 
   delete-release:
     needs: [docker, torchhub]

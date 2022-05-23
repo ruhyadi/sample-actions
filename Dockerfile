@@ -1,17 +1,8 @@
-# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 
-# Start FROM Ubuntu image https://hub.docker.com/_/ubuntu
 FROM python:3.9.13-slim-buster
 
-# Create working directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# working directory
+WORKDIR /home
 
+# entrypoint must be bash to run python hubconf.py
 ENTRYPOINT [ "bash" ]
-# Usage Examples -------------------------------------------------------------------------------------------------------
-
-# Build and Push
-# t=ultralytics/yolov5:latest-cpu && sudo docker build -f utils/docker/Dockerfile-cpu -t $t . && sudo docker push $t
-
-# Pull and Run
-# t=ultralytics/yolov5:latest-cpu && sudo docker pull $t && sudo docker run -it --ipc=host -v "$(pwd)"/datasets:/usr/src/datasets $t
