@@ -1,12 +1,17 @@
 name: Checking Model
 
+# TODO: change to release
+# on:
+#   push:
+#     branches:
+#       - "main"
 on:
-  push:
-    branches:
-      - "main"
+  release:
+    types: [released]
 
+# TODO: add tags
 env:
-  IMAGE_NAME: ${{ github.repository }}:latest
+  IMAGE_NAME: ${{ github.repository }}:${{ github.ref_name }}
 
 jobs:
   docker:
@@ -41,9 +46,35 @@ jobs:
     name: Load Model with Torch Hub
     runs-on: ubuntu-latest
     container:
-      image: ruhyadi/sample-actions:latest
+      image: ruhyadi/sample-actions:v1.0
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
       - name: Load Model
         run: python hubconf.py
+
+  delete-release:
+    needs: [docker, torchhub]
+    name: Delete Release
+    runs-on: ubuntu-latest
+    if: always() && (needs.torchhub.result == 'failure')
+    steps:
+      - name: Delete Tag and Release 
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: ${{ github.ref_name }}
+          repo: ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # nuclio-server:
+  #   name: Initiate Nulcio Server
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: ruhyadi/sample-actions:latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+  #     - name: Load Model
+  #       run: python hubconf.py
